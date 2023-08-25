@@ -4,17 +4,32 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var a = 1;
+  var name = ['하니', '다니엘', '해린'];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
+            floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    a++;
+                  });
+                },
+                child: Text(a.toString())),
             appBar: AppBar(
               title: Row(
                 children: [
-                  Text('금호동3가'),
+                  Text('연락처앱'),
                   IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.keyboard_arrow_down),
@@ -50,85 +65,33 @@ class MyApp extends StatelessWidget {
                 size: 25,
               ),
             ),
-            body: ShopItem(),
-            bottomNavigationBar: BottomAppBar(
-                child: SizedBox(
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(Icons.phone),
-                  Icon(Icons.message),
-                  Icon(Icons.contact_page)
-                ],
-              ),
-            ))));
+            body: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (c, i) {
+                  return ListTile(
+                      leading: Image.asset('assets/img.jpg'),
+                      title: Text(name[i]));
+                }),
+            bottomNavigationBar: BottomBar()));
   }
 }
 
-class ShopItem extends StatelessWidget {
-  const ShopItem({super.key});
+class BottomBar extends StatelessWidget {
+  const BottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 140,
-      margin: EdgeInsets.all(15),
+    return BottomAppBar(
+        child: SizedBox(
+      height: 50,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Flexible(
-            flex: 5,
-            child: Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Image.asset('assets/img.jpg', fit: BoxFit.fill),
-            ),
-          ),
-          Flexible(
-            flex: 5,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RichText(
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  text: TextSpan(
-                      text: '캐논 DSLR 100D (단렌즈,충전기 16기가SD 포함,흥정 불가능)',
-                      style: TextStyle(fontSize: 18, color: Colors.black)),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    '성동구 행당동 끌올 10분 전',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    '210,000원',
-                    style: TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.favorite_border),
-                      iconSize: 20,
-                    ),
-                    Text('3')
-                  ],
-                )
-              ],
-            ),
-          )
+          Icon(Icons.phone),
+          Icon(Icons.message),
+          Icon(Icons.contact_page)
         ],
       ),
-    );
+    ));
   }
 }
