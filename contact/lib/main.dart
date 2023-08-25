@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -12,13 +13,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  getPermission() async {
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
+      print('허락됨');
+    } else if (status.isDenied) {
+      print('거절됨');
+      Permission.contacts.request();
+      // openAppSettings();
+    }
+  }
+
   List<Map<String, dynamic>> data = [
     {'name': '하니', 'likes': 0},
     {'name': '다니엘', 'likes': 0},
     {'name': '해린', 'likes': 0}
   ];
 
-  var num = 3;
+  // late int num;
+
+  // @override
+  // void initState() {
+  //   // num = data.length;
+  //   super.initState();
+  //   getPermission();
+  // }
 
   void _incrementLike(int index) {
     setState(() {
@@ -33,11 +52,11 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  addOne() {
-    setState(() {
-      num += 1;
-    });
-  }
+  // addOne() {
+  //   setState(() {
+  //     num += 1;
+  //   });
+  // }
 
   List<Map<String, dynamic>> deepCopyData(
       List<Map<String, dynamic>> originalData) {
@@ -54,7 +73,7 @@ class _MyAppState extends State<MyApp> {
               context: context,
               builder: (context) {
                 return DialogUI(
-                  addOne: addOne,
+                  // addOne: addOne,
                   addPerson: addPerson,
                 );
               });
@@ -62,12 +81,12 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Row(
             children: [
-              Text(num.toString()),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.keyboard_arrow_down),
-                color: Colors.black,
-              )
+              Text('연락처'),
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: Icon(Icons.keyboard_arrow_down),
+              //   color: Colors.black,
+              // )
             ],
           ),
           centerTitle: false,
@@ -76,19 +95,11 @@ class _MyAppState extends State<MyApp> {
               color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  getPermission();
+                },
                 icon: Icon(
-                  Icons.search,
-                )),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.menu,
-                )),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.notifications_none,
+                  Icons.contacts,
                 )),
           ],
           actionsIconTheme: IconThemeData(
@@ -97,7 +108,8 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         body: ListView.builder(
-            itemCount: num,
+            // itemCount: num,
+            itemCount: data.length,
             itemBuilder: (c, i) {
               return ListTile(
                 leading: Text(data[i]['likes'].toString()),
