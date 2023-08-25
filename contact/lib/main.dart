@@ -17,10 +17,25 @@ class _MyAppState extends State<MyApp> {
     {'name': '다니엘', 'likes': 0},
     {'name': '해린', 'likes': 0}
   ];
+
+  var num = 3;
+
   void _incrementLike(int index) {
     setState(() {
       data[index]['likes'] += 1;
       // data = deepCopyData(data);
+    });
+  }
+
+  addPerson(String name) {
+    setState(() {
+      data.add({'name': name, 'likes': 0});
+    });
+  }
+
+  addOne() {
+    setState(() {
+      num += 1;
     });
   }
 
@@ -38,42 +53,16 @@ class _MyAppState extends State<MyApp> {
           showDialog(
               context: context,
               builder: (context) {
-                return Dialog(
-                    child: Container(
-                  padding: EdgeInsets.all(20),
-                  height: 200,
-                  width: 300,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Contact',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      TextField(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text('Cancel')),
-                          TextButton(onPressed: () {}, child: Text('Ok'))
-                        ],
-                      )
-                    ],
-                  ),
-                ));
+                return DialogUI(
+                  addOne: addOne,
+                  addPerson: addPerson,
+                );
               });
         }),
         appBar: AppBar(
           title: Row(
             children: [
-              Text('연락처앱'),
+              Text(num.toString()),
               IconButton(
                 onPressed: () {},
                 icon: Icon(Icons.keyboard_arrow_down),
@@ -108,7 +97,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         body: ListView.builder(
-            itemCount: 3,
+            itemCount: num,
             itemBuilder: (c, i) {
               return ListTile(
                 leading: Text(data[i]['likes'].toString()),
@@ -139,6 +128,55 @@ class BottomBar extends StatelessWidget {
           Icon(Icons.phone),
           Icon(Icons.message),
           Icon(Icons.contact_page)
+        ],
+      ),
+    ));
+  }
+}
+
+class DialogUI extends StatelessWidget {
+  DialogUI({super.key, this.addOne, this.addPerson});
+  final addOne;
+  final addPerson;
+  var inputData = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        child: Container(
+      padding: EdgeInsets.all(20),
+      height: 200,
+      width: 300,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              'Contact',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          TextField(
+            controller: inputData,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Cancel')),
+              TextButton(
+                  onPressed: () {
+                    addPerson(inputData.text);
+                    addOne();
+                    Navigator.pop(context);
+                  },
+                  child: Text('Ok')),
+            ],
+          )
         ],
       ),
     ));
