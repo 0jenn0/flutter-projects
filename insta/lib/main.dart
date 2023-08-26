@@ -30,15 +30,15 @@ class MyApp extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.home_outlined)),
-            IconButton(
-                onPressed: () {}, icon: Icon(Icons.shopping_bag_outlined))
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined), label: 'home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_outlined), label: 'shop')
+        ],
       ),
     );
   }
