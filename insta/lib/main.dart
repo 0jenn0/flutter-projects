@@ -24,7 +24,22 @@ class MyApp extends StatelessWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.add_box_outlined))
         ],
       ),
-      body: Theme(data: ThemeData(textTheme: TextTheme()), child: Container()),
+      body: Container(
+        child: Text(
+          'Hello',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.home_outlined)),
+            IconButton(
+                onPressed: () {}, icon: Icon(Icons.shopping_bag_outlined))
+          ],
+        ),
+      ),
     );
   }
 }
