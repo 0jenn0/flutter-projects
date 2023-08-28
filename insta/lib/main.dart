@@ -18,12 +18,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var tab = 0;
+  var data = [];
 
   getData() async {
     var result = await http
         .get(Uri.parse('https://codingapple1.github.io/app/data.json'))
         .then((value) => jsonDecode(value.body));
-    print(result[0]['likes']);
+    setState(() {
+      data = result;
+    });
   }
 
   @override
@@ -46,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           IconButton(onPressed: () {}, icon: Icon(Icons.add_box_outlined))
         ],
       ),
-      body: [Home(), Text('Shop')][tab],
+      body: [Home(data: data), Text('Shop')][tab],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -69,28 +72,26 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Home extends StatelessWidget {
+  const Home({super.key, this.data});
+  final data;
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    print(data);
     return ListView.builder(
+        itemCount: data.length,
         itemBuilder: (c, i) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image.network(),
-              Text('좋아요 100'),
-              Text('글쓴이'),
-              Text('글내용'),
+              Image.network(data[i]['image']),
+              Text('likes ' + data[i]['likes'].toString()),
+              Text(data[i]['user']),
+              Text(data[i]['content'])
+              // Text(data[0]['content'])
             ],
           );
-        },
-        itemCount: 3);
+        });
   }
 }
