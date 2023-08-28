@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 var theme = ThemeData(
     // textButtonTheme: TextButtonThemeData(
     //     style: TextButton.styleFrom(backgroundColor: Colors.blue)),
-    textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.red)),
+    textTheme:
+        TextTheme(bodyMedium: TextStyle(color: Colors.black, fontSize: 16)),
     iconTheme: IconThemeData(color: Colors.black87, size: 18),
     appBarTheme: AppBarTheme(
         actionsIconTheme: IconThemeData(color: Colors.grey, size: 30),
