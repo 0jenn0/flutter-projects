@@ -55,7 +55,12 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.add_box_outlined))
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (c) => Upload()));
+              },
+              icon: Icon(Icons.add_box_outlined))
         ],
       ),
       body: [Home(data: data, addData: addData), Text('Shop')][tab],
@@ -124,5 +129,26 @@ class _HomeState extends State<Home> {
     } else {
       return Text('Loading ...');
     }
+  }
+}
+
+class Upload extends StatelessWidget {
+  const Upload({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('이미지 업로드 화면'),
+            IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.close))
+          ],
+        ));
   }
 }
