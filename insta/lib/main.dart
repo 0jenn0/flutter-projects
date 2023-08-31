@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './style.dart' as style;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,7 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
 void main() {
-  runApp(MaterialApp(home: MyApp(), theme: style.theme));
+  runApp(ChangeNotifierProvider(
+      create: (c) => Store1(),
+      child: MaterialApp(home: MyApp(), theme: style.theme)));
 }
 
 var fontStyle = TextStyle();
@@ -223,6 +226,20 @@ class Upload extends StatelessWidget {
   }
 }
 
+class Store1 extends ChangeNotifier {
+  var name = 'john kim';
+  var follower = 0;
+  changeName(newName) {
+    name = newName;
+    notifyListeners(); // 재랜더링
+  }
+
+  follow() {
+    follower += 1;
+    notifyListeners();
+  }
+}
+
 class Profile extends StatelessWidget {
   const Profile({super.key});
 
@@ -230,7 +247,17 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Text('프로필페이지'),
+      body: Row(
+        children: [
+          Text(context.watch<Store1>().name),
+          Text('팔로워 ${context.watch<Store1>().follower}명'),
+          TextButton(
+              onPressed: () {
+                context.read<Store1>().follow();
+              },
+              child: Text("팔로우"))
+        ],
+      ),
     );
   }
 }
