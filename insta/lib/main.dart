@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:insta/notification.dart';
 import 'package:provider/provider.dart';
 import './style.dart' as style;
 import 'package:http/http.dart' as http;
@@ -89,12 +90,19 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    initNotification(context);
     getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showNotification();
+        },
+        child: Text('+'),
+      ),
       appBar: AppBar(
         title: Align(
           alignment: Alignment.centerLeft,
@@ -318,9 +326,8 @@ class _ProfileState extends State<Profile> {
           // )
           SliverGrid(
               delegate: SliverChildBuilderDelegate(
-                  (context, index) => Container(
-                        color: Colors.amber,
-                      ),
+                  (c, i) =>
+                      Image.network(context.watch<Store1>().profileImage[i]),
                   childCount: 5),
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3))
