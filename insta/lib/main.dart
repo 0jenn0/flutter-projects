@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './style.dart' as style;
 import 'package:http/http.dart' as http;
@@ -5,6 +6,8 @@ import 'dart:convert';
 import 'package:flutter/rendering.dart'; // 스크롤 다룰 때 임포트해놓고 시작하면 좋음
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp(), theme: style.theme));
@@ -23,6 +26,18 @@ class _MyAppState extends State<MyApp> {
   var tab = 0;
   var data = [];
   var userImage;
+
+  saveData() async {
+    // 저장 공간 오픈하는 법
+    var storage = await SharedPreferences.getInstance();
+    storage.setString('name', 'john');
+    // storage.remove('name'); 내용 삭제
+    // var result = storage.get('name');
+    var map = {'age': 20};
+    storage.setString('map', jsonEncode(map)); // map을 JSON으로 바꿔줌.
+    var result = storage.getString('map') ?? '없음';
+    print(jsonDecode(result)['age']);
+  }
 
   getData() async {
     var result = await http
@@ -145,7 +160,21 @@ class _HomeState extends State<Home> {
                     ? Image.network(widget.data[i]['image'])
                     : Image.file(widget.data[i]['image']),
                 Text('likes ${widget.data[i]['likes']}'),
-                Text(widget.data[i]['user']),
+                GestureDetector(
+                  child: Text(widget.data[i]['user']),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                            pageBuilder: (c, a1, a2) => Profile(),
+                            transitionsBuilder: (c, a1, a2, child) =>
+                                FadeTransition(
+                                  opacity: a1,
+                                  child: child,
+                                ),
+                            transitionDuration: Duration(milliseconds: 50)));
+                  },
+                ),
                 Text(widget.data[i]['content'])
                 // Text(data[0]['content'])
               ],
@@ -191,5 +220,17 @@ class Upload extends StatelessWidget {
                 icon: Icon(Icons.close))
           ],
         ));
+  }
+}
+
+class Profile extends StatelessWidget {
+  const Profile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Text('프로필페이지'),
+    );
   }
 }
