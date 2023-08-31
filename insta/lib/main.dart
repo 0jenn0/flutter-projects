@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 // void main() {
 //   runApp(ChangeNotifierProvider(
@@ -17,7 +19,12 @@ import 'package:flutter/cupertino.dart';
 //       child: MaterialApp(home: MyApp(), theme: style.theme)));
 // }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (c) => Store1()),
     ChangeNotifierProvider(create: (c) => Store2()),
