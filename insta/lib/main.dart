@@ -10,10 +10,17 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
+// void main() {
+//   runApp(ChangeNotifierProvider(
+//       create: (c) => Store1(),
+//       child: MaterialApp(home: MyApp(), theme: style.theme)));
+// }
+
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (c) => Store1(),
-      child: MaterialApp(home: MyApp(), theme: style.theme)));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (c) => Store1()),
+    ChangeNotifierProvider(create: (c) => Store2()),
+  ], child: MaterialApp(home: MyApp(), theme: style.theme)));
 }
 
 var fontStyle = TextStyle();
@@ -227,31 +234,62 @@ class Upload extends StatelessWidget {
 }
 
 class Store1 extends ChangeNotifier {
-  var name = 'john kim';
   var follower = 0;
   var isFollow = false;
-  changeName(newName) {
-    name = newName;
-    notifyListeners(); // 재랜더링
-  }
+  var profileImage = [];
 
   follow() {
     isFollow ? follower -= 1 : follower += 1;
     isFollow = !isFollow;
     notifyListeners();
   }
+
+  getData() async {
+    var result = await http
+        .get(Uri.parse('https://codingapple1.github.io/app/profile.json'))
+        .then((value) => jsonDecode(value.body));
+    profileImage = result;
+    print(result[0]);
+    notifyListeners();
+  }
 }
 
-class Profile extends StatelessWidget {
+class Store2 extends ChangeNotifier {
+  var name = 'john kim';
+  changeName(newName) {
+    name = newName;
+    notifyListeners(); // 재랜더링
+  }
+}
+
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<Store1>().getData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(context.watch<Store1>().name),
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.blueGrey,
+            // backgroundImage: Image.network(context.watch<Store1>().profileImage[0]),
+          ),
+          Text(context.watch<Store2>().name),
           Text('팔로워 ${context.watch<Store1>().follower}명'),
           TextButton(
               onPressed: () {
