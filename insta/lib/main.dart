@@ -281,21 +281,49 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.blueGrey,
-            // backgroundImage: Image.network(context.watch<Store1>().profileImage[0]),
+      body: CustomScrollView(
+        // slivers 안에 있는거 합쳐서 스크롤바 하나 만들어줌.
+        slivers: [
+          SliverToBoxAdapter(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.blueGrey,
+                    backgroundImage:
+                        NetworkImage(context.watch<Store1>().profileImage[0])),
+                Text(context.watch<Store2>().name),
+                Text('팔로워 ${context.watch<Store1>().follower}명'),
+                TextButton(
+                    onPressed: () {
+                      context.read<Store1>().follow();
+                    },
+                    child: Text("팔로우"))
+              ],
+            ),
           ),
-          Text(context.watch<Store2>().name),
-          Text('팔로워 ${context.watch<Store1>().follower}명'),
-          TextButton(
-              onPressed: () {
-                context.read<Store1>().follow();
-              },
-              child: Text("팔로우"))
+          // Expanded(
+          //   child: GridView.builder(
+          //     padding: EdgeInsets.all(10),
+          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //         crossAxisCount: 3), // 몇 개를 가로로 보여줄지
+          //     itemBuilder: (c, i) {
+          //       return Container(
+          //         color: Colors.lightGreen,
+          //       );
+          //     },
+          //     itemCount: 3,
+          //   ),
+          // )
+          SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                  (context, index) => Container(
+                        color: Colors.amber,
+                      ),
+                  childCount: 5),
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3))
         ],
       ),
     );
