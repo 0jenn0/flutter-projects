@@ -229,13 +229,15 @@ class Upload extends StatelessWidget {
 class Store1 extends ChangeNotifier {
   var name = 'john kim';
   var follower = 0;
+  var isFollow = false;
   changeName(newName) {
     name = newName;
     notifyListeners(); // 재랜더링
   }
 
   follow() {
-    follower += 1;
+    isFollow ? follower -= 1 : follower += 1;
+    isFollow = !isFollow;
     notifyListeners();
   }
 }
