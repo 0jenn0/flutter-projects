@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insta/notification.dart';
+import 'package:insta/shop.dart';
 import 'package:provider/provider.dart';
 import './style.dart' as style;
 import 'package:http/http.dart' as http;
@@ -125,7 +126,7 @@ class _MyAppState extends State<MyApp> {
               icon: Icon(Icons.add_box_outlined))
         ],
       ),
-      body: [Home(data: data, addData: addData), Text('Shop')][tab],
+      body: [Home(data: data, addData: addData), Shop()][tab],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
