@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/contants/gaps.dart';
 import 'package:tiktok_clone/contants/sizes.dart';
+import 'package:tiktok_clone/screens/login/login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
+
+  void onLoginTap(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LogInScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +45,14 @@ class SignUpScreen extends StatelessWidget {
             children: [
               const Text("Already have an account?"),
               Gaps.h5,
-              Text(
-                'Log in',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.w600),
+              GestureDetector(
+                onTap: () => onLoginTap(context),
+                child: Text(
+                  'Log in',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w600),
+                ),
               )
             ],
           ),
