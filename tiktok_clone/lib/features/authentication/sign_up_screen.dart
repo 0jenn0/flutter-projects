@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/contants/gaps.dart';
 import 'package:tiktok_clone/contants/sizes.dart';
-import 'package:tiktok_clone/screens/sign_up/sign_up_screen.dart';
+import 'package:tiktok_clone/features/authentication/login_screen.dart';
+import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
-class LogInScreen extends StatelessWidget {
-  const LogInScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
-  void onSignUpTap(BuildContext context) {
+  void onLoginTap(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
+        .push(MaterialPageRoute(builder: (context) => const LogInScreen()));
   }
 
   @override
@@ -21,16 +23,24 @@ class LogInScreen extends StatelessWidget {
             children: [
               Gaps.v80,
               Text(
-                'Log in to TikTok',
+                'Sign up for TikTok',
                 style: TextStyle(
                     fontSize: Sizes.size24, fontWeight: FontWeight.w700),
               ),
               Gaps.v20,
               Text(
-                'Manage your account, check notifications, comment on videos, and more.',
+                'Create a profile, follow other accounts, make your own videos, and more.',
                 style: TextStyle(fontSize: Sizes.size16, color: Colors.black45),
                 textAlign: TextAlign.center,
               ),
+              Gaps.v40,
+              AuthButton(
+                  icon: FaIcon(FontAwesomeIcons.user),
+                  text: "Use email & password"),
+              Gaps.v16,
+              AuthButton(
+                  icon: FaIcon(FontAwesomeIcons.apple),
+                  text: "Continue with Apple"),
             ],
           ),
         ),
@@ -43,12 +53,12 @@ class LogInScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Don't have an account?"),
+              const Text("Already have an account?"),
               Gaps.h5,
               GestureDetector(
-                onTap: () => onSignUpTap(context),
+                onTap: () => onLoginTap(context),
                 child: Text(
-                  'Sign Up',
+                  'Log in',
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w600),
