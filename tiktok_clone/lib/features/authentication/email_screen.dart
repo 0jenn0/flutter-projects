@@ -37,23 +37,15 @@ class _EmailScreenState extends State<EmailScreen> {
           children: [
             Gaps.v40,
             const Text(
-              'Create username',
+              'What is your Email',
               style: TextStyle(
                   fontSize: Sizes.size24, fontWeight: FontWeight.w700),
-            ),
-            Gaps.v8,
-            const Text(
-              'Create username',
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: Sizes.size16,
-                  fontWeight: FontWeight.w600),
             ),
             Gaps.v16,
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
-                hintText: "Username",
+                hintText: "Email",
                 enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: Colors.grey.shade400,
