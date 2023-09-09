@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/contants/gaps.dart';
 import 'package:tiktok_clone/contants/sizes.dart';
@@ -13,11 +14,15 @@ class BirthdayScreen extends StatefulWidget {
 
 class _BirthdayScreenState extends State<BirthdayScreen> {
   final TextEditingController _birthdayController = TextEditingController();
-  DateTime date = DateTime.now();
+  DateTime initialDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    _setTextFieldDate(initialDate);
+  }
+
+  void _setTextFieldDate(DateTime date) {
     final textDate = date.toString().split(' ').first;
     _birthdayController.value = TextEditingValue(text: textDate);
   }
@@ -80,6 +85,16 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                 onTap: _onNextTap, child: const FormButton(disabled: false))
           ],
         ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+            height: 300,
+            child: CupertinoDatePicker(
+              maximumDate: initialDate,
+              initialDateTime: initialDate,
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: _setTextFieldDate,
+            )),
       ),
     );
   }
