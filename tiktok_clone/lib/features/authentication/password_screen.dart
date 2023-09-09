@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/contants/gaps.dart';
 import 'package:tiktok_clone/contants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/birthday_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 
 class PasswordScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
   bool _isPasswordValid() {
     final regExp = RegExp(
-        r"^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[@$!%*#?&\^])[A-Za-z0-9@$!%*#?&\^]{9,}$");
+        r"^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[@$!%*#?&\^])[A-Za-z0-9@$!%*#?&\^]{8,20}$");
     if (_password.isEmpty || !regExp.hasMatch(_password)) return false;
 
     return true;
@@ -38,13 +39,13 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
   void _onScaffoldTap() {
     FocusScope.of(context).unfocus(); // foucs된 모든 것들을 unfocus
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => PasswordScreen(),
-    ));
   }
 
   void _onSubmit() {
-    if (_password.isEmpty || _isPasswordValid()) return;
+    if (!_isPasswordValid()) return;
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const BirthdayScreen(),
+    ));
   }
 
   void _onClearTap() {
@@ -123,6 +124,25 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   )),
                 ),
                 cursorColor: Theme.of(context).primaryColor,
+              ),
+              Gaps.v10,
+              const Text(
+                'Your password must have :',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Gaps.v10,
+              Row(
+                children: [
+                  Icon(
+                    FontAwesomeIcons.circleCheck,
+                    size: Sizes.size20,
+                    color: _isPasswordValid()
+                        ? Colors.green
+                        : Colors.grey.shade400,
+                  ),
+                  Gaps.h10,
+                  const Text('8 to 20 characters')
+                ],
               ),
               Gaps.v16,
               GestureDetector(
