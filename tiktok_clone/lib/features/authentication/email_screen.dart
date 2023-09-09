@@ -37,13 +37,13 @@ class _EmailScreenState extends State<EmailScreen> {
 
   void _onScaffoldTap() {
     FocusScope.of(context).unfocus(); // foucs된 모든 것들을 unfocus
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => PasswordScreen(),
-    ));
   }
 
   void _onSubmit() {
     if (_email.isEmpty || _isEmailValid() != null) return;
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => PasswordScreen(),
+    ));
   }
 
   @override
